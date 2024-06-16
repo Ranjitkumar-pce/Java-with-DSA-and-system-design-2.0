@@ -1,7 +1,9 @@
 
-
 1. What are the Conditional Operators in Java?
-Ans: Conditional operators in Java, also known as ternary operators, are used to evaluate a boolean expression and return a value based on whether the expression is true or false. The main conditional operator in Java is the ternary operator ? :.
+Ans: Conditional operators in Java, also known as ternary operators.It is a smaller version for the if-else statement. If the condition is true then the statement - 1 is executed else the 
+statement - 2 is executed.
+// Syntax
+condition ? statement - 1 : statement - 2;
 
 2.What are the types of operators based on the number of operands?
 Ans: TheJe are three types of operators in Java based on the number of operands. They are
@@ -11,6 +13,7 @@ Ans: TheJe are three types of operators in Java based on the number of operands.
 
 3. What is the use of Switch case in Java programming?
 Ans:In Java programming, the switch statement is a control flow construct that allows you to execute different code blocks based on the value of a single expression. It's a way to simplify decision-making when you have multiple possible conditions to consider. The switch statement evaluates the expression and then directs the program's flow to the appropriate block of code associated with the matching value or case.
+// Write a program to print the day name based upon the day number
 
 int day = 3;
 String dayName;
@@ -38,13 +41,21 @@ switch (day) {
 System.out.println("Today is " + dayName);
 
 4. What are the priority levels of arithmetic operation in Java?
-Ans: High Priority: */% and Low priority: +-
+Ans: High Priority: */% 
+Low priority: +-
 
 5. What are the 6onditional Statements and use of 6onditional statements in Java?
 Ans. if Statement: The if statement allows you to execute a block of code if a specified condition is true.
 if-else Statement: The if-else statement lets you execute one block of code if a condition is true and another block if the condition is false.
 if-else if-else Statement: The if-else if-else statement is used when you have multiple conditions to check. It allows you to specify multiple conditions and execute different blocks of code based on which condition is true.
+Nested if-else Statement: if-else Statement inside another if-else statement.
+Switch Statement: we have a variable. Now, we want to do multiple operations on it based upon what value it is storing.It is like an if-else ladder with multiple conditions, where we check for equality of a variable with various values.It works with byte, short, int, long, enum types, String.
 
+
+
+
+
+ 
 6. What is the syntax of if else statement?
 ans. if (condition1) {
 // statement(s) to be executed if condition1 is true
