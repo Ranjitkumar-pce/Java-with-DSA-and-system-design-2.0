@@ -1,6 +1,14 @@
 1.How to create an object in java?
+Ans. By using "new" Keyword
+     classname nameofobject = new classname();
+     example:-    Test obj = new Test();
+
+What is the use of a new keyword in Java?
+Ans. The new keyword is used to create instances (objects) of classes. When you use new, you are allocating memory for an object on the heap area.
+
 3.What are the different types of variables in Java?
 Ans. Static , Instance and Local Variable
+
 4.What is the difference between Instance variables and Local variables?
 Ans. Instance Variables:
 
