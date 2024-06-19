@@ -1,0 +1,59 @@
+1.How to create an object in java?
+3.What are the different types of variables in Java?
+Ans. Static , Instance and Local Variable
+4.What is the difference between Instance variables and Local variables?
+Ans. Instance Variables:
+
+Declaration: Instance variables are declared within a class but outside of any method, constructor, or block. They are also known as member variables or attributes of a class.
+Default Values: Instance variables are assigned default values (e.g., 0 for numeric types, null for string types) if they are not initialized in a constructor by code.
+Scope: Instance variables are accessible throughout the entire class and are associated with the instance (object) of the class. Each instance of the class has its own copy of instance variables.
+Lifetime: The lifetime of an instance variable is tied to the lifetime of the object. It exists as long as the object exists and is reclaimed by the garbage collector when the object is no longer referenced.
+
+Local Variables: 
+
+Declaration: Local variables are declared within a method, constructor, or block (e.g., within curly braces {}) and are only accessible within the block in which they are declared.
+Must Be Initialized: Local variables must be initialized by code before they are used, unlike instance variables, which are assigned default values if not initialized.
+Scope: Local variables have a limited scope and are only accessible within the block in which they are defined. They are not accessible outside of that block.
+Lifetime: The lifetime of a local variable is limited to the duration of the method, constructor, or block in which it is declared. Once that block exits, the local variable goes out of scope and is no longer accessible.
+
+5.In which area memory is allocated for instance variable and local variable?
+Ans. Instance Variable in Heap and Local Variable is in Stack.
+6.What is method overloading?
+Ans.Two or multiple methods are said to be overloaded if and only if both methods have the same name but differnt argument types.The key distinction between these methods is the type, number, or order of their parameters. Method overloading enables you to use the same method name for related operations, making your code more readable and reusable.
+
+    class calc{
+        public int add(int n1,int n2)
+        {
+        int result=n1+n2;
+            return result;
+    }
+    public int add(int n1,int n2,int n3)
+    {
+    int res1=n1+n2+n3;
+        return res1;
+}
+public double add(double n1,double n2)
+    {
+    double res2=n1+n2;
+        return res2;
+    }
+  }
+    public class Methodoverloading {
+    public static void main(String[] args) {
+       calc obj=new calc();
+      
+       int  result = obj.add(4,3);
+       System.out.println(result);
+
+       int res1=obj.add(1,2,3);
+      System.out.println(res1);
+
+      double res2=obj.add(4.7,2.2);
+     System.out.println(res2);
+
+    }
+    
+}
+    
+
+
