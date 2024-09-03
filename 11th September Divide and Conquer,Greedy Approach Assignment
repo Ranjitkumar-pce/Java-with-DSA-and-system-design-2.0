@@ -1,0 +1,525 @@
+###Inversion Count and Selection Algorithms Assignment Questions
+
+Q1. Given an integer array, find the kth largest element using the quickselect algorithm.
+Ans.
+// Java code for k largest elements in an array
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
+class GFG {
+    public static void kLargest(Integer[] arr, int k)
+    {
+        // Sort the given array arr in reverse order
+        // This method doesn't work with primitive data
+        // types. So, instead of int, Integer type
+        // array will be used
+        Arrays.sort(arr, Collections.reverseOrder());
+
+        // Print the first kth largest elements
+        for (int i = 0; i < k; i++)
+            System.out.print(arr[i] + " ");
+    }
+
+    // This code is contributed by Niraj Dubey
+    public static ArrayList<Integer> kLargest(int[] arr,
+                                              int k)
+    {
+        // Convert using stream
+        Integer[] obj_array
+            = Arrays.stream(arr).boxed().toArray(
+                Integer[] ::new);
+        Arrays.sort(obj_array, Collections.reverseOrder());
+        ArrayList<Integer> list = new ArrayList<>(k);
+
+        for (int i = 0; i < k; i++)
+            list.add(obj_array[i]);
+
+        return list;
+    }
+
+      // Driver code
+    public static void main(String[] args)
+    {
+        Integer arr[]
+            = new Integer[] { 1, 23, 12, 9, 30, 2, 50 };
+        int k = 3;
+        kLargest(arr, k);
+
+        // This code is contributed by Niraj Dubey
+        // What if primitive datatype array is passed and
+        // wanted to return in ArrayList<Integer>
+        int[] prim_array = { 1, 23, 12, 9, 30, 2, 50 };
+        kLargest(prim_array, k);
+    }
+}
+
+####Greedy Algorithms Assignment Questions
+Q1. Find the minimum sum of Products of two arrays of the same size, given that k modificationsare allowed on the first array. In each modification, one array element of the first array can either be increased or decreased by 2.
+Ans.
+import java.util.Arrays;
+
+public class MinimumSumOfProducts {
+    public static int minSumOfProducts(int[] arr1, int[] arr2, int k) {
+        int n = arr1.length;
+        Arrays.sort(arr1);
+        Arrays.sort(arr2, (a, b) -> b - a); // Sort arr2 in descending order
+
+        for (int i = 0; i < k; i++) {
+            if (arr1[i] < arr2[n - 1 - i]) {
+                int temp = arr1[i];
+                arr1[i] = arr2[n - 1 - i];
+                arr2[n - 1 - i] = temp;
+            }
+        }
+
+        int minSum = 0;
+        for (int i = 0; i < n; i++) {
+            minSum += arr1[i] * arr2[i];
+        }
+
+        return minSum;
+    }
+
+    public static void main(String[] args) {
+        int[] arr1 = {1, 3, 5, 7};
+        int[] arr2 = {4, 6, 8, 10};
+        int k = 2;
+
+        int minSum = minSumOfProducts(arr1, arr2, k);
+        System.out.println("Minimum sum of products: " + minSum);
+    }
+}
+Q2. You are given n activities with their start and finish times. Select the maximum number of
+activities that can be performed by a single person, assuming that a person can only work on a
+single activity at a time.
+Ans.
+// Java program for activity selection problem.
+
+// The following implementation assumes that the activities
+// are already sorted according to their finish time
+import java.io.*;
+import java.lang.*;
+import java.util.*;
+
+class ActivitySelection {
+    // Prints a maximum set of activities that can be done
+    // by a single person, one at a time.
+    public static void printMaxActivities(int s[], int f[],
+                                          int n)
+    {
+        int i, j;
+
+        System.out.println(
+            "Following activities are selected");
+
+        // The first activity always gets selected
+        i = 0;
+        System.out.print(i + " ");
+
+        // Consider rest of the activities
+        for (j = 1; j < n; j++) {
+            // If this activity has start time greater than
+            // or equal to the finish time of previously
+            // selected activity, then select it
+            if (s[j] >= f[i]) {
+                System.out.print(j + " ");
+                i = j;
+            }
+        }
+    }
+
+    // Driver code
+    public static void main(String[] args)
+    {
+        int s[] = { 1, 3, 0, 5, 8, 5 };
+        int f[] = { 2, 4, 6, 7, 9, 9 };
+        int n = s.length;
+
+        // Function call
+        printMaxActivities(s, f, n);
+    }
+}
+
+Q3. There are n gas stations along a circular route, where the amount of gas at the ith station is
+gas[i].You have a car with an unlimited gas tank and it costs “cost[i]” of gas to travel from the
+ith station to its next (i + 1)th station. You begin the journey with an empty tank at one of the gas
+stations.Given two integer arrays gas and cost, return the starting gas station's index if you can
+travel around the circuit once in the clockwise direction, otherwise return -1. If there exists a
+solution, it is guaranteed to be unique.
+Ans.
+public class GasStation {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int n = gas.length;
+        int[] netGas = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            netGas[i] = gas[i] - cost[i];
+        }
+
+        int start = 0;
+        int currentGas = 0;
+        for (int i = 0; i < n; i++) {
+            currentGas += netGas[i];
+            if (currentGas < 0) {
+                start = i + 1;
+                currentGas = 0;
+            }
+        }
+
+        return currentGas >= 0 ? start : -1;
+    }
+}
+Q4. You have a long flowerbed in which some of the plots are planted, and some are not.
+However, flowers cannot be planted in adjacent plots.Given an integer array flowerbed
+containing 0's and 1's, where 0 means empty and 1 means not empty, and an integer n, return if n
+new flowers can be planted in the flowerbed without violating the no-adjacent-flowers rule.
+Ans.
+public boolean canPlaceFlowers(int[] flowerbed, int n) {
+    int count = 0;
+    for(int i = 0; i < flowerbed.length && count < n; i++) {
+        if(flowerbed[i] == 0) {
+	    int next = (i == flowerbed.length - 1) ? 0 : flowerbed[i + 1]; 
+	    int prev = (i == 0) ? 0 : flowerbed[i - 1]; 
+            if(next == 0 && prev == 0) {
+                flowerbed[i] = 1;
+                count++;
+            }
+        }
+    }
+    return count == n;
+}
+Q5. Given an array of intervals where intervals[i] = [starti, endi], return the minimum number of
+intervals you need to remove to make the rest of the intervals non-overlapping.
+Ans.
+//Java equivalent of above code
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class Main {
+  public static int minRemovals(List<int[]> ranges) {
+    int size = ranges.size(), rem = 0;
+
+    if (size <= 1)
+      return 0;
+
+    // Sort by minimum starting point
+    Collections.sort(ranges, new Comparator<int[]>() {
+      @Override
+      public int compare(int[] o1, int[] o2) {
+        return o1[0] - o2[0];
+      }
+    });
+
+    int end = ranges.get(0)[1];
+    for (int i = 1; i < ranges.size(); i++) {
+      // If the current starting point is less than
+      // the previous interval's ending point
+      // (ie. there is an overlap)
+      if (ranges.get(i)[0] < end) {
+        // increase rem
+        rem++;
+        // Remove the interval
+        // with the higher ending point
+        end = Math.min(ranges.get(i)[1], end);
+      } else
+        end = ranges.get(i)[1];
+    }
+
+    return rem;
+  }
+
+  // Driver code
+  public static void main(String[] args) {
+    List<int[]> input = new ArrayList<int[]>();
+    input.add(new int[] { 19, 25 });
+    input.add(new int[] { 10, 20 });
+    input.add(new int[] { 16, 20 });
+    System.out.println(minRemovals(input));
+  }
+}
+
+
+####Divide and Conquer Assignment Questions
+Q1. Given an array where all its elements are sorted in increasing order except two swapped
+elements, sort it in linear time. Assume there are no duplicates in the array.
+Ans.
+import java.io.*;
+
+class GFG 
+{
+static void sortByOneSwap(int arr[],int n)
+{
+	// Traverse the given array
+	// from rightmost side
+	for (int i = n - 1; i > 0; i--)
+	{
+		// Check if arr[i] 
+		// is not in order
+		if (arr[i] < arr[i - 1])
+		{
+			// Find the other element 
+			// to be swapped with arr[i]
+			int j = i - 1;
+			while (j >= 0 && arr[i] < arr[j])
+				j--;
+
+			// Swap the pair
+			int temp = arr[i];
+			arr[i] = arr[j + 1];
+			arr[j + 1] = temp;
+	
+			break;
+		}
+	}
+}
+
+// A utility function to 
+// print an array of size n
+static void printArray(int arr[], int n)
+{
+	int i;
+	for (i = 0; i < n; i++)
+		System.out.print(arr[i] + " ");
+	System.out.println();
+}
+
+// Driver Code
+public static void main(String[] args) 
+{
+int arr[] = {10, 30, 20, 
+			40, 50, 60, 70};
+int n = arr.length;
+
+System.out.println("Given array is ");
+printArray(arr, n);
+
+sortByOneSwap(arr, n);
+
+System.out.println("Sorted array is ");
+printArray(arr, n);
+}
+}
+
+Q2. Given an array of positive and negative integers, segregate them in linear time and constant
+space. The output should print all negative numbers, followed by all positive numbers.
+Ans.
+// Java program to move all 
+// negative numbers to beginning 
+// and positive numbers to end
+// keeping order.
+class GFG
+{
+static void segregate(int arr[], 
+					int n)
+{
+	
+// Count negative numbers
+int count_negative = 0;
+for (int i = 0; i < n; i++) 
+	if (arr[i] < 0)
+		count_negative++; 
+
+// Run a loop until all 
+// negative numbers are 
+// moved to the beginning
+int i = 0, j = i + 1;
+while (i != count_negative)
+{
+
+	// If number is negative, 
+	// update position of next
+	// positive number.
+	if (arr[i] < 0) 
+	{
+		i++;
+		j = i + 1;
+	}
+
+	// If number is positive, move 
+	// it to index j and increment j.
+	else if (arr[i] > 0 && j < n) 
+	{
+		int t = arr[i];
+		arr[i] = arr[j];
+		arr[j] = t;
+		j++;
+	}
+}
+}
+
+// Driver code
+public static void main(String[] args) 
+{
+	int count_negative = 0;
+	int arr[] = { -12, 11, -13, -5,
+				6, -7, 5, -3, -6 };
+	int n = arr.length;
+	segregate(arr, n);
+	for (int i = 0; i < n; i++)
+		System.out.print(arr[i] + " "); 
+}
+}
+Q3. Given an array of positive and negative integers, segregate them in linear time and constant
+space. The output should print all negative numbers, followed by all positive numbers. The
+relative order of elements must remain the same.
+Ans.
+public class SegregatePositiveNegative {
+    public static void segregate(int[] arr) {
+        int n = arr.length;
+        int left = 0, right = n - 1;
+
+        while (left <= right) {
+            if (arr[left] < 0) {
+                left++;
+            } else if (arr[right] > 0) {
+                right--;
+            } else {
+                int temp = arr[left];
+                arr[left] = arr[right];
+                arr[right] = temp;
+                left++;
+                right--;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {-1, 2, -3, 4, 5, -6, 7, -8};
+        segregate(arr);
+
+        System.out.println("Segregated array:");
+        for (int num : arr) {
+            System.out.print(num + " ");
+        }
+    }
+}
+Q4. Given two arrays of equal size n and an integer k. The task is to permute both arrays such
+that the sum of their corresponding element is greater than or equal to k i.e a[i] + b[i] >= k. The
+task is to print “Yes” if any such permutation exists, otherwise print “No”.
+Ans.
+// Java code for the approach
+
+import java.util.*;
+
+public class GFG {
+
+	// Function to check if an Array is a
+	// permutation of numbers from 1 to N
+	public static boolean isPermutation(int[] arr, int n)
+	{
+
+		// Check for each element from
+		// 1 to N in the array
+		for (int i = 1; i <= n; i++) {
+			boolean found = false;
+			for (int j = 0; j < n; j++) {
+				if (arr[j] == i) {
+					found = true;
+					break;
+				}
+			}
+			// If any element is not found,
+			// array is not a permutation
+			if (!found) {
+				return false;
+			}
+		}
+
+		// All elements found, array
+		// is a permutation
+		return true;
+	}
+
+	// Driver's code
+	public static void main(String[] args)
+	{
+		int[] arr = { 1, 2, 5, 3, 2 };
+		int n = arr.length;
+
+		if (isPermutation(arr, n)) {
+			System.out.println("Yes");
+		}
+		else {
+			System.out.println("No");
+		}
+	}
+}
+
+Q5. An interval is represented as a combination of start time and end time. Given a set of
+intervals, check if any two intervals intersect.
+// A Java program to check if any two intervals overlap 
+import java.io.*; 
+import java.lang.*; 
+import java.util.*; 
+
+class GFG{ 
+
+// An interval has start time and end time 
+static class Interval 
+{ 
+	int start; 
+	int end; 
+	
+	public Interval(int start, int end) 
+	{ 
+		super(); 
+		this.start = start; 
+		this.end = end; 
+	} 
+}; 
+
+// Function to check if any two intervals overlap 
+static boolean isIntersect(Interval arr[], int n) 
+{ 
+
+	// Sort intervals in increasing order of start time 
+	Arrays.sort(arr, (i1, i2) -> { 
+		return i1.start - i2.start; 
+	}); 
+
+	// In the sorted array, if start time of an interval 
+	// is less than end of previous interval, then there 
+	// is an overlap 
+	for(int i = 1; i < n; i++) 
+		if (arr[i - 1].end > arr[i].start) 
+			return true; 
+
+	// If we reach here, then no overlap 
+	return false; 
+} 
+
+// Driver code 
+public static void main(String[] args) 
+{ 
+	Interval arr1[] = { new Interval(1, 3), 
+						new Interval(7, 9), 
+						new Interval(4, 6), 
+						new Interval(10, 13) }; 
+	int n1 = arr1.length; 
+
+	if (isIntersect(arr1, n1)) 
+		System.out.print("Yes\n"); 
+	else
+		System.out.print("No\n"); 
+
+	Interval arr2[] = { new Interval(6, 8), 
+						new Interval(1, 3), 
+						new Interval(2, 4), 
+						new Interval(4, 7) }; 
+	int n2 = arr2.length; 
+	
+	if (isIntersect(arr2, n2)) 
+		System.out.print("Yes\n"); 
+	else
+		System.out.print("No\n"); 
+} 
+} 
+
+// This code is contributed by Kingash
+
+
+
+
