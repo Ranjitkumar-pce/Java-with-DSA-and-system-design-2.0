@@ -1,0 +1,407 @@
+Q1. Given a linked list and a key ‘X‘ in, the task is to check if X is present in the linked list or not.
+Ans.
+// Iterative Java program to search
+// an element in linked list
+
+// A Linked List Node
+class Node {
+    int data;
+    Node next;
+
+    // Constructor to initialize a new node with data
+    Node(int new_data) {
+        data = new_data;
+        next = null;
+    }
+}
+
+public class GFG {
+
+    // Checks whether key is present in linked list
+    static boolean searchKey(Node head, int key) {
+
+        // Initialize curr with the head of linked list
+        Node curr = head;
+
+        // Iterate over all the nodes
+        while (curr != null) {
+
+            // If the current node's value is equal to key,
+            // return true
+            if (curr.data == key)
+                return true;
+
+            // Move to the next node
+            curr = curr.next;
+        }
+
+        // If there is no node with value as key, return
+        // false
+        return false;
+    }
+    
+      // Driver code
+    public static void main(String[] args) {
+
+        // Create a hard-coded linked list:
+        // 14 -> 21 -> 13 -> 30 -> 10
+        Node head = new Node(14);
+        head.next = new Node(21);
+        head.next.next = new Node(13);
+        head.next.next.next = new Node(30);
+        head.next.next.next.next = new Node(10);
+
+        // Key to search in the linked list
+        int key = 14;
+
+        if (searchKey(head, key))
+            System.out.println("Yes");
+        else
+            System.out.println("No");
+    }
+}
+Q2:Insert a node at the given position in a linked list. We are given a pointer to a node, and the
+new node is inserted after the given node.
+Ans.
+// Java program for insertion in a single linked
+// list at a specified position
+class Node {
+    int data;
+    Node next;
+
+    Node(int new_data) {
+        data = new_data;
+        next = null;
+    }
+}
+
+public class GfG {
+
+    // function to insert a Node at required position
+    static Node insertPos(Node head, int pos, int data, int size) {
+
+        // This condition to check whether the
+        // position given is valid or not.
+        if (pos < 1 || pos > size + 1)
+            return head;
+
+        Node newNode = new Node(data);
+
+        // head will change if pos=1
+        if (pos == 1) {
+            newNode.next = head;
+            size++;
+            return newNode;
+        }
+
+        Node curr = head;
+
+        // Traverse to the node that will be 
+        // present just before the new node
+        for (int i = 1; i < pos - 1; i++) {
+            curr = curr.next;
+        }
+
+        // update the next pointers
+        newNode.next = curr.next;
+        curr.next = newNode;
+
+        size++;
+
+        return head;
+    }
+
+    static void printList(Node node) {
+        while (node != null) {
+            System.out.print(node.data + " ");
+            node = node.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+
+        // Creating the list 3->5->8->10
+        Node head = new Node(3);
+        head.next = new Node(5);
+        head.next.next = new Node(8);
+        head.next.next.next = new Node(10);
+
+        int size = 4;
+        int data = 12, pos = 3;
+        head = insertPos(head, pos, data, size);
+        printList(head);
+    }
+}
+Q3. Given the head of a sorted linked list, delete all duplicates such that each element
+appears only once. Return the linked list sorted as well.
+Ans.
+// Java program to remove duplicates from a
+// sorted linked list using Hashset
+
+import java.io.*;
+import java.util.HashSet;
+
+class Node {
+    int data;
+    Node next;
+    Node(int x) {
+        data = x;
+        next = null;
+    }
+}
+
+class GfG {
+  
+    // Function to remove duplicates
+    static Node removeDuplicates(Node head) {
+      
+        // HashSet to track unique node values
+        HashSet<Integer> st = new HashSet<>();
+
+        // Initialize pointers for traversing
+        // the original list and building the new
+        // list without duplicates
+        Node temp = head;
+        Node newHead = null;
+        Node tail = null;
+
+        // Traverse the original list
+        while (temp != null) {
+          
+            // Check if the current node's data is not in
+            // the set
+            if (!st.contains(temp.data)) {
+              
+                // Create a new node for the unique data
+                Node newNode = new Node(temp.data);
+
+                // If newHead is null, this is the first
+                // unique node
+                if (newHead == null) {
+                    newHead = newNode;
+                    tail = newHead;
+                }
+                else {
+                    // Append the new node to the
+                    // end of the new list
+                    tail.next = newNode;
+                    tail = newNode;
+                }
+
+                // Mark this data as encountered
+                st.add(temp.data);
+            }
+            // Move to the next node in the original list
+            temp = temp.next;
+        }
+      
+        // Return the head of the new list with
+        // duplicates removed
+        return newHead;
+    }
+
+    // Function to print nodes in a given linked list
+    public static void printList(Node node) {
+        while (node != null) {
+            System.out.print(node.data + " ");
+            node = node.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+      
+        // Create a sorted linked list:
+        // 11->11->11->13->13->20
+        Node head = new Node(11);
+        head.next = new Node(11);
+        head.next.next = new Node(11);
+        head.next.next.next = new Node(13);
+        head.next.next.next.next = new Node(13);
+        head.next.next.next.next.next = new Node(20);
+
+        System.out.println(
+            "Linked list before duplicate removal:");
+        printList(head);
+
+        head = removeDuplicates(head);
+
+        System.out.println(
+            "Linked list after duplicate removal:");
+        printList(head);
+    }
+}
+Q4. Given the head of a singly linked list, return true if it is a palindrome or false otherwise.
+Ans.
+/* Java program to check if linked list is palindrome
+ * recursively */
+import java.util.*;
+
+class linkedList {
+    public static void main(String args[])
+    {
+        Node one = new Node(1);
+        Node two = new Node(2);
+        Node three = new Node(3);
+        Node four = new Node(4);
+        Node five = new Node(3);
+        Node six = new Node(2);
+        Node seven = new Node(1);
+        one.ptr = two;
+        two.ptr = three;
+        three.ptr = four;
+        four.ptr = five;
+        five.ptr = six;
+        six.ptr = seven;
+        boolean condition = isPalindrome(one);
+        System.out.println("isPalidrome :" + condition);
+    }
+    static boolean isPalindrome(Node head)
+    {
+
+        Node slow = head;
+        boolean ispalin = true;
+        Stack<Integer> stack = new Stack<Integer>();
+
+        while (slow != null) {
+            stack.push(slow.data);
+            slow = slow.ptr;
+        }
+
+        while (head != null) {
+
+            int i = stack.pop();
+            if (head.data == i) {
+                ispalin = true;
+            }
+            else {
+                ispalin = false;
+                break;
+            }
+            head = head.ptr;
+        }
+        return ispalin;
+    }
+}
+
+class Node {
+    int data;
+    Node ptr;
+    Node(int d)
+    {
+        ptr = null;
+        data = d;
+    }
+}
+Q5. Given two numbers represented by two lists, write a function that returns the sum list. The
+sum list is a list representation of the addition of two input numbers.
+Ans.
+// Java Program to add two numbers represented as
+// linked list by creating a new list
+
+class Node {
+    int data;
+    Node next;
+
+    Node(int val) {
+        data = val;
+        next = null;
+    }
+}
+
+public class GfG {
+
+    // Function to reverse the linked list
+    static Node reverse(Node head) {
+        Node prev = null;
+        Node curr = head;
+        Node next;
+
+        while (curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+
+    // Function to add two numbers represented by linked list
+    static Node addTwoLists(Node num1, Node num2) {
+        Node res = null;
+        Node curr = null;
+        int carry = 0;
+
+        num1 = reverse(num1);
+        num2 = reverse(num2);
+
+        // Iterate till either num1 is not empty or num2 is
+        // not empty or carry is greater than 0
+        while (num1 != null || num2 != null || carry != 0) {
+            int sum = carry;
+
+            // If num1 linked list is not empty, add it to sum
+            if (num1 != null) {
+                sum += num1.data;
+                num1 = num1.next;
+            }
+
+            // If num2 linked list is not empty, add it to sum
+            if (num2 != null) {
+                sum += num2.data;
+                num2 = num2.next;
+            }
+          
+            // Create a new node with sum % 10 as its value
+            Node newNode = new Node(sum % 10);
+
+            // Store the carry for the next nodes
+            carry = sum / 10;
+
+            // If this is the first node, then make this node
+            // as the head of the resultant linked list
+            if (res == null) {
+                res = newNode;
+                curr = newNode;
+            } else {
+                // Append new node to resultant linked list
+                // and move to the next node
+                curr.next = newNode;
+                curr = curr.next;
+            }
+        }
+
+        // Reverse the resultant linked list to get the
+        // required linked list
+        return reverse(res);
+    }
+
+    static void printList(Node head) {
+        Node curr = head;
+        while (curr != null) {
+            System.out.print(curr.data + " ");
+            curr = curr.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        
+          // Creating first linked list: 1 -> 2 -> 3
+        // (represents 123)
+        Node num1 = new Node(1);
+        num1.next = new Node(2);
+        num1.next.next = new Node(3);
+
+        // Creating second linked list: 9 -> 9 -> 9
+        // (represents 999)
+        Node num2 = new Node(9);
+        num2.next = new Node(9);
+        num2.next.next = new Node(9);
+
+        Node sum = addTwoLists(num1, num2);
+        printList(sum);
+    }
+}
+
