@@ -1,0 +1,303 @@
+Q1. Given an integer array arr and an integer k, return true if it ispossible to divide the vectorinto k non-empty subsets with equal sum.
+Ans.
+class FG 
+{
+static boolean isKPartitionPossibleRec(int arr[], int subsetSum[], boolean taken[],
+				int subset, int K, int N, int curIdx, int limitIdx)
+{
+	if (subsetSum[curIdx] == subset)
+	{
+		/* current index (K - 2) represents (K - 1) subsets of equal
+			sum last partition will already remain with sum 'subset'*/
+		if (curIdx == K - 2)
+			return true;
+
+		// recursive call for next subsetition
+		return isKPartitionPossibleRec(arr, subsetSum, taken, subset,
+											K, N, curIdx + 1, N - 1);
+	}
+
+	// start from limitIdx and include elements into current partition
+	for (int i = limitIdx; i >= 0; i--)
+	{
+		// if already taken, continue
+		if (taken[i])
+			continue;
+		int tmp = subsetSum[curIdx] + arr[i];
+
+		// if temp is less than subset then only include the element
+		// and call recursively
+		if (tmp <= subset)
+		{
+			// mark the element and include into current partition sum
+			taken[i] = true;
+			subsetSum[curIdx] += arr[i];
+			boolean nxt = isKPartitionPossibleRec(arr, subsetSum, taken,
+											subset, K, N, curIdx, i - 1);
+
+			// after recursive call unmark the element and remove from
+			// subsetition sum
+			taken[i] = false;
+			subsetSum[curIdx] -= arr[i];
+			if (nxt)
+				return true;
+		}
+	}
+	return false;
+}
+
+// Method returns true if arr can be partitioned into K subsets
+// with equal sum
+static boolean isKPartitionPossible(int arr[], int N, int K)
+{
+	// If K is 1, then complete array will be our answer
+	if (K == 1)
+		return true;
+
+	// If total number of partitions are more than N, then
+	// division is not possible
+	if (N < K)
+		return false;
+
+	// if array sum is not divisible by K then we can't divide
+	// array into K partitions
+	int sum = 0;
+	for (int i = 0; i < N; i++)
+		sum += arr[i];
+	if (sum % K != 0)
+		return false;
+
+	// the sum of each subset should be subset (= sum / K)
+	int subset = sum / K;
+	int []subsetSum = new int[K];
+	boolean []taken = new boolean[N];
+
+	// Initialize sum of each subset from 0
+	for (int i = 0; i < K; i++)
+		subsetSum[i] = 0;
+
+	// mark all elements as not taken
+	for (int i = 0; i < N; i++)
+		taken[i] = false;
+
+	// initialize first subset sum as last element of
+	// array and mark that as taken
+	subsetSum[0] = arr[N - 1];
+	taken[N - 1] = true;
+
+	// call recursive method to check K-substitution condition
+	return isKPartitionPossibleRec(arr, subsetSum, taken,
+									subset, K, N, 0, N - 1);
+}
+
+// Driver code 
+public static void main(String[] args)
+{
+	int arr[] = {2, 1, 4, 5, 3, 3};
+	int N = arr.length;
+	int K = 3;
+
+	if (isKPartitionPossible(arr, N, K))
+		System.out.println("Partitions into equal sum is possible.");
+	else
+		System.out.println("Partitions into equal sum is not possible.");
+}
+}
+Q2. Given an integer array arr, print all the possible permutations of the given array.
+Ans.
+// Java program for the above approach 
+
+import java.util.ArrayList; 
+import java.util.Arrays; 
+
+public class GFG 
+{ 
+	// Function for swapping two numbers 
+	static void swap(int nums[], int l, int i) 
+	{ 
+		int temp = nums[l]; 
+		nums[l] = nums[i]; 
+		nums[i] = temp; 
+	} 
+
+	// Function to find the possible 
+	// permutations 
+	static void permutations(ArrayList<int[]> res, 
+							int[] nums, int l, int h) 
+	{ 
+		// Base case 
+		// Add the array to result and return 
+		if (l == h) { 
+			res.add(Arrays.copyOf(nums, nums.length)); 
+			return; 
+		} 
+
+		// Permutations made 
+		for (int i = l; i <= h; i++) { 
+			// Swapping 
+			swap(nums, l, i); 
+
+			// Calling permutations for 
+			// next greater value of l 
+			permutations(res, nums, l + 1, h); 
+
+			// Backtracking 
+			swap(nums, l, i); 
+		} 
+	} 
+
+	// Function to get the permutations 
+	static ArrayList<int[]> permute(int[] nums) 
+	{ 
+		// Declaring result variable 
+		ArrayList<int[]> res = new ArrayList<int[]>(); 
+		int x = nums.length - 1; 
+
+		// Calling permutations for the first 
+		// time by passing l 
+		// as 0 and h = nums.size()-1 
+		permutations(res, nums, 0, x); 
+		return res; 
+	} 
+
+	// Driver Code 
+	public static void main(String[] args) 
+	{ 
+		int[] nums = { 1, 2, 3 }; 
+		ArrayList<int[]> res = permute(nums); 
+
+		// printing result 
+		for (int[] x : res) { 
+			for (int y : x) { 
+				System.out.print(y + " "); 
+			} 
+			System.out.println(); 
+		} 
+	} 
+} 
+Q3. Given a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.
+Ans.
+class Solution {
+    private List<List<Integer>> ans = new ArrayList<>();
+    private List<Integer> t = new ArrayList<>();
+    private int[] nums;
+    private boolean[] vis;
+
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        Arrays.sort(nums);
+        this.nums = nums;
+        vis = new boolean[nums.length];
+        dfs(0);
+        return ans;
+    }
+
+    private void dfs(int i) {
+        if (i == nums.length) {
+            ans.add(new ArrayList<>(t));
+            return;
+        }
+        for (int j = 0; j < nums.length; ++j) {
+            if (vis[j] || (j > 0 && nums[j] == nums[j - 1] && !vis[j - 1])) {
+                continue;
+            }
+            t.add(nums[j]);
+            vis[j] = true;
+            dfs(i + 1);
+            vis[j] = false;
+            t.remove(t.size() - 1);
+        }
+    }
+}
+Q4. Check if the product of some subset of an array is equal to the target value.
+Ans.
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductSubset {
+    public static boolean checkProductSubset(int[] arr, int target) {
+        int n = arr.length;
+        List<List<Integer>> subsets = generateSubsets(arr, n);
+
+        for (List<Integer> subset : subsets) {
+            int product = 1;
+            for (int num : subset) {
+                product *= num;
+            }
+            if (product == target) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static List<List<Integer>> generateSubsets(int[] arr, int n) {
+        List<List<Integer>> subsets = new ArrayList<>();
+        subsets.add(new ArrayList<>());
+
+        for (int i = 0; i < n; i++) {
+            int currentSize = subsets.size();
+            for (int j = 0; j < currentSize; j++) {
+                List<Integer> newSubset = new ArrayList<>(subsets.get(j));
+                newSubset.add(arr[i]);
+                subsets.add(newSubset);
+            }
+        }
+
+        return subsets;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {2, 3, 5, 7};
+        int target = 10;
+
+        if (checkProductSubset(arr, target)) {
+            System.out.println("A subset with product equal to " + target + " exists.");
+        } else {
+            System.out.println("No subset with product equal to " + target + " exists.");
+        }
+    }
+}
+Q5. The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.Given an integer n, return the number of distinct solutions to the n-queens puzzle.
+Ans.
+class Solution {
+    private List<List<String>> ans = new ArrayList<>();
+    private int[] col;
+    private int[] dg;
+    private int[] udg;
+    private String[][] g;
+    private int n;
+
+    public List<List<String>> solveNQueens(int n) {
+        this.n = n;
+        col = new int[n];
+        dg = new int[n << 1];
+        udg = new int[n << 1];
+        g = new String[n][n];
+        for (int i = 0; i < n; ++i) {
+            Arrays.fill(g[i], ".");
+        }
+        dfs(0);
+        return ans;
+    }
+
+    private void dfs(int i) {
+        if (i == n) {
+            List<String> t = new ArrayList<>();
+            for (int j = 0; j < n; ++j) {
+                t.add(String.join("", g[j]));
+            }
+            ans.add(t);
+            return;
+        }
+        for (int j = 0; j < n; ++j) {
+            if (col[j] + dg[i + j] + udg[n - i + j] == 0) {
+                g[i][j] = "Q";
+                col[j] = dg[i + j] = udg[n - i + j] = 1;
+                dfs(i + 1);
+                col[j] = dg[i + j] = udg[n - i + j] = 0;
+                g[i][j] = ".";
+            }
+        }
+    }
+}
